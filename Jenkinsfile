@@ -1,35 +1,48 @@
+def DELAY_SECOND = 1
+def Delay(delay) {
+    echo "Waiting ${delay} seconds for before continuing with next stage :)"
+    echo "--------------------------------------------------------------------------------"
+    sleep delay
+}
+
 pipeline {
   agent any
   stages {
     stage('Checkout code') {
       steps {
-        echo 'Checking code'
+        echo 'Checking code....'
+        echo "Job '${JOB_NAME}' (${BUILD_NUMBER}) is waiting for input"
       }
     }
     stage('Restore packages') {
       steps {
-        echo 'Restoring packages'
+        echo 'Restoring packages....'
         bat 'dotnet restore ComPort.sln'
       }
     }
     stage('Build') {
       steps {
-        echo 'Building'
+        echo 'Building....'
+        bat "dotnet clean ComPort.sln"
+        bat "dotnet build ComPort.sln -c Debug /property:Version=1.0.${BUILD_NUMBER}"
       }
     }
     stage('Test') {
       steps {
-        echo 'Test'
+        echo 'No Testing....'
+				//bat 'dotnet test ./ComPort.Test/'
       }
     }
     stage('Release') {
       steps {
-        echo 'Release'
+        echo 'No Release'
+        //bat "dotnet build ComPort.sln -c Release /property:Version=2.1.${BUILD_NUMBER}"
       }
     }
     stage('Deploy') {
       steps {
-        echo 'Deploy'
+        echo 'No Deploy'
+        //bat "copy .\\ComPort\\bin\\Release\\*.nupkg C:\\Host\\packages\\ /Y"
       }
     }
   }
