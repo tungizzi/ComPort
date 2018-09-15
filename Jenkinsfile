@@ -9,6 +9,7 @@ pipeline {
     stage('Restore packages') {
       steps {
         echo 'Restoring packages'
+        sh 'dotnet restore ComPort.sln'
       }
     }
     stage('Build') {
