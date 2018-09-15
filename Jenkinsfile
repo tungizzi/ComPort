@@ -1,10 +1,3 @@
-def DELAY_SECOND = 1
-def Delay(delay) {
-    echo "Waiting ${delay} seconds for before continuing with next stage :)"
-    echo "--------------------------------------------------------------------------------"
-    sleep delay
-}
-
 pipeline {
   agent any
   stages {
