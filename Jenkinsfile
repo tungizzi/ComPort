@@ -16,26 +16,32 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building....'
-        bat "dotnet clean ComPort.sln"
+        bat 'dotnet clean ComPort.sln'
         bat "dotnet build ComPort.sln -c Debug /property:Version=1.0.${BUILD_NUMBER}"
       }
     }
     stage('Test') {
       steps {
         echo 'No Testing....'
-				//bat 'dotnet test ./ComPort.Test/'
       }
     }
     stage('Release') {
       steps {
         echo 'No Release'
-        //bat "dotnet build ComPort.sln -c Release /property:Version=2.1.${BUILD_NUMBER}"
       }
     }
     stage('Deploy') {
-      steps {
-        echo 'No Deploy'
-        //bat "copy .\\ComPort\\bin\\Release\\*.nupkg C:\\Host\\packages\\ /Y"
+      parallel {
+        stage('Deploy') {
+          steps {
+            echo 'No Deploy'
+          }
+        }
+        stage('Deploy confirm') {
+          steps {
+            mail(subject: 'Comport deployed', body: 'xyz', to: 'maythamfahmi@itbackyard.com')
+          }
+        }
       }
     }
   }
